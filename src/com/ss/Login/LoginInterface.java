@@ -53,9 +53,9 @@ class LoginInterface extends JFrame {
         buttonsPanel.setBorder(BorderFactory.createEmptyBorder(110, 110, 0, 110));
         fieldsPanel.add(buttonsPanel, BorderLayout.SOUTH);
 
-        JLabel usernameLabel = new JLabel("Username:");
-        usernameLabel.setFont(new Font("Arial", Font.PLAIN, 16));
-        usernameAndPasswordPanel.add(usernameLabel);
+        JLabel EmailLabel = new JLabel("Email:");
+        EmailLabel.setFont(new Font("Arial", Font.PLAIN, 16));
+        usernameAndPasswordPanel.add(EmailLabel);
 
         JTextField usernameField = new JTextField();
         usernameAndPasswordPanel.add(usernameField);
