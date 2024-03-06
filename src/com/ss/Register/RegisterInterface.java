@@ -1,5 +1,6 @@
 package com.ss.Register;
 
+import com.ss.Home.HomeInterface;
 import com.ss.Login.*;
 import javax.swing.*;
 import java.awt.*;
@@ -104,6 +105,27 @@ public class RegisterInterface extends JFrame{
 
         gradientPanel.add(fieldsPanel);
         gradientPanel.add(imagePanel);
+
+
+        //Adding action listeners to the buttons
+        loginButton.addActionListener(e -> {
+            dispose();
+            new LoginInterface();
+        });
+
+        registerButton.addActionListener(e -> {
+                    String name = nameField.getText();
+                    String email = usernameField.getText();
+                    String password = new String(passwordField.getPassword());
+
+                    if (name.isEmpty() || email.isEmpty() || password.isEmpty()) {
+                        JOptionPane.showMessageDialog(null, "Please fill in all the fields", "Error", JOptionPane.ERROR_MESSAGE);
+                    } else {
+                        JOptionPane.showMessageDialog(null, "User registered successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
+                        dispose();
+                        new HomeInterface(email);
+                    }
+        });
 
         setTitle("Register");
         setSize(720, 480);

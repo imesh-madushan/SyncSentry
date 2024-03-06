@@ -1,10 +1,11 @@
 package com.ss.Login;
 
 import com.ss.Register.*;
+import com.ss.Home.*;
 import javax.swing.*;
 import java.awt.*;
 
-class LoginInterface extends JFrame {
+public class LoginInterface extends JFrame {
     public LoginInterface() {
         initComponents();
     }
@@ -57,8 +58,8 @@ class LoginInterface extends JFrame {
         EmailLabel.setFont(new Font("Arial", Font.PLAIN, 16));
         usernameAndPasswordPanel.add(EmailLabel);
 
-        JTextField usernameField = new JTextField();
-        usernameAndPasswordPanel.add(usernameField);
+        JTextField emailField = new JTextField();
+        usernameAndPasswordPanel.add(emailField);
 
         JLabel passwordLabel = new JLabel("Password:");
         passwordLabel.setFont(new Font("Arial", Font.PLAIN, 16));
@@ -96,6 +97,28 @@ class LoginInterface extends JFrame {
 
         gradientPanel.add(imagePanel);
         gradientPanel.add(fieldsPanel);
+
+        // Adding action listeners to the buttons
+        loginButton.addActionListener(e -> {
+                    String email = emailField.getText();
+                    String password = new String(passwordField.getPassword());
+
+                    if(email == null || email.isEmpty() || password == null || password.isEmpty()) {
+                        JOptionPane.showMessageDialog(this, "Please enter a valid username and password", "Error", JOptionPane.ERROR_MESSAGE);
+                        return;
+                    } else if (email.equals("123") && password.equals("123")) {
+                        dispose();
+                        new HomeInterface(email);
+                    } else {
+                        JOptionPane.showMessageDialog(this, "Invalid username or password", "Error", JOptionPane.ERROR_MESSAGE);
+                    }
+        });
+
+        registerButton.addActionListener(e -> {
+            dispose();
+            new RegisterInterface();
+        });
+
 
         setTitle("Login");
         setSize(720, 480);

@@ -1,12 +1,14 @@
 package com.ss.Home;
 
+import com.ss.Login.*;
+import com.ss.Home.*;
 import javax.swing.*;
 import java.awt.*;
 
 public class HomeInterface extends JFrame {
-    private String username;
-    public HomeInterface(){
-        username = "David";
+    private String email;
+    public HomeInterface(String email){
+        this.email = email;
         initComponents();
     }
 
@@ -49,10 +51,17 @@ public class HomeInterface extends JFrame {
 
         JPanel usrnamePanel = new JPanel(new BorderLayout());
         usrnamePanel.setBackground(new Color(255, 255, 255, 0));
-        JLabel userName = new JLabel(username);
+
+        JLabel userName = new JLabel(email);
         userName.setFont(new Font("Arial", Font.PLAIN, 18));
         userName.setHorizontalAlignment(SwingConstants.CENTER);
         userName.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
+
+        JLabel planLabel = new JLabel("Free Plan");
+        planLabel.setFont(new Font("Arial", Font.PLAIN, 18));
+        planLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        planLabel.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
+
 
         JButton LogoutButton = new JButton("Logout");
         LogoutButton.setFont(new Font("Arial", Font.PLAIN, 18));
@@ -90,7 +99,7 @@ public class HomeInterface extends JFrame {
         uploadLabel.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 10));
         uploadLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
-        JButton uploadButton = new JButton("Upload");
+        JButton uploadButton = new JButton("Select");
         uploadButton.setFont(new Font("Arial", Font.PLAIN, 18));
         uploadButton.setBackground(new Color(255, 255, 255));
         uploadButton.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 10));
@@ -114,6 +123,17 @@ public class HomeInterface extends JFrame {
         gradientPanel.add(sideRight, BorderLayout.CENTER);
         container.add(gradientPanel);
 
+        //Adding enevt listeners to the buttons
+        LogoutButton.addActionListener(e -> {
+            dispose();
+            new LoginInterface();
+        });
+
+        uploadButton.addActionListener(e -> {
+            FileHandler.uploadFile();
+        });
+
+
         setTitle("Home");
         setSize(1080, 720);
         setResizable(false);
@@ -124,7 +144,7 @@ public class HomeInterface extends JFrame {
 
         //Creating the dynamic file panels
         for (int i = 0; i < 10; i++) {
-            JPanel filePanel = new JPanel(new FlowLayout());
+            JPanel filePanel = new JPanel(new GridLayout(0, 4));
             filePanel.setBackground(new Color(255, 255, 255, 0));
             filePanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
@@ -134,18 +154,21 @@ public class HomeInterface extends JFrame {
             filePanel.add(fileName);
 
             JButton downloadButton = new JButton("Rename");
+            downloadButton.setForeground(new Color(8, 173, 35));
             downloadButton.setFont(new Font("Arial", Font.PLAIN, 18));
             downloadButton.setBackground(new Color(255, 255, 255));
             downloadButton.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
             filePanel.add(downloadButton);
 
             JButton renameButton = new JButton("Download");
+            renameButton.setForeground(Color.blue);
             renameButton.setFont(new Font("Arial", Font.PLAIN, 18));
             renameButton.setBackground(new Color(255, 255, 255));
             renameButton.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
             filePanel.add(renameButton);
 
             JButton deleteButton = new JButton("Delete");
+            deleteButton.setForeground(Color.RED);
             deleteButton.setFont(new Font("Arial", Font.PLAIN, 18));
             deleteButton.setBackground(new Color(255, 255, 255));
             deleteButton.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
@@ -153,11 +176,11 @@ public class HomeInterface extends JFrame {
 
             wrapperPanel.add(filePanel);
         }
-        scrollPane.setViewportView(wrapperPanel);
+        scrollPane.setViewportView(wrapperPanel); // Set the wrapperPanel to the scrollPane as the view
 
     }
 
     public static void main(String[] args) {
-        new HomeInterface();
+        new HomeInterface("root@mail.com");
     }
 }
