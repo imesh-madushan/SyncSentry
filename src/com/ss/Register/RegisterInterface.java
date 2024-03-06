@@ -105,7 +105,7 @@ public class RegisterInterface extends JFrame{
         gradientPanel.add(fieldsPanel);
         gradientPanel.add(imagePanel);
 
-        setTitle("Login");
+        setTitle("Register");
         setSize(720, 480);
         setResizable(false);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
