@@ -7,11 +7,15 @@ import java.awt.*;
 
 public class HomeInterface extends JFrame {
     private String email;
+    private static String cusID = "C001";
     public HomeInterface(String email){
         this.email = email;
         initComponents();
     }
 
+    public static String getCusID(){
+        return cusID;
+    }
     private void initComponents(){
         Container container = getContentPane();
 
@@ -62,7 +66,6 @@ public class HomeInterface extends JFrame {
         planLabel.setHorizontalAlignment(SwingConstants.CENTER);
         planLabel.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
 
-
         JButton LogoutButton = new JButton("Logout");
         LogoutButton.setFont(new Font("Arial", Font.PLAIN, 18));
         LogoutButton.setBackground(new Color(255, 255, 255));
@@ -108,6 +111,7 @@ public class HomeInterface extends JFrame {
         // Adding the elements to the panels
         sideLeft.add(imageLabel, BorderLayout.NORTH);
         usrnamePanel.add(userName, BorderLayout.NORTH);
+        usrnamePanel.add(planLabel);
         sideLeft.add(usrnamePanel, BorderLayout.CENTER);
         sideLeft.add(LogoutButton, BorderLayout.SOUTH);
 

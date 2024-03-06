@@ -2,6 +2,7 @@ package com.ss.Register;
 
 import com.ss.Home.HomeInterface;
 import com.ss.Login.*;
+import com.ss.RemoteConnection.Commands;
 import javax.swing.*;
 import java.awt.*;
 
@@ -121,9 +122,13 @@ public class RegisterInterface extends JFrame{
                     if (name.isEmpty() || email.isEmpty() || password.isEmpty()) {
                         JOptionPane.showMessageDialog(null, "Please fill in all the fields", "Error", JOptionPane.ERROR_MESSAGE);
                     } else {
+                        //Here to check if already in database
+                        //Here to generate customer ID
+                        String cusID = "C001";
                         JOptionPane.showMessageDialog(null, "User registered successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
                         dispose();
                         new HomeInterface(email);
+                        Commands.createFolderInVps(cusID);  //Creating a folder in vps with customer ID for the first time
                     }
         });
 

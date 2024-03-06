@@ -11,8 +11,11 @@ public class FileHandler {
         fileChooser.showOpenDialog(null); // Show the file chooser
         File file = fileChooser.getSelectedFile(); // Get the file
 
-        System.out.println(file.length()/1024 + " KB");
-        System.out.println(file.getAbsolutePath());
+        System.out.println("Selected File size "+file.length()/1024 + " KB");
+        System.out.println("Selected File name "+file.getName());
+        System.out.println("Selected File path "+file.getAbsolutePath());
+        System.out.println("Selected File type "+fileChooser.getTypeDescription(file));
+        System.out.println("The folder size is "+file.getParentFile().length()/(1024*1024) + " MB");
     }
 
     public static void downloadFile() {
