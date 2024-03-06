@@ -2,14 +2,12 @@ package com.ss.RemoteConnection;
 import com.jcraft.jsch.*;
 import com.ss.Home.*;
 
-import javax.swing.plaf.synth.SynthOptionPaneUI;
 import java.io.*;
 import java.nio.file.Path;
-import java.security.PublicKey;
 
 import static java.nio.file.Files.exists;
 
-public class Commands extends Connection{
+public class RemoteCmds extends Connection{
 
     public static void createFolderInVps(String cusID){// Creating folder in VPS with cusID for the first time
         Session sessionMKDIR = connect();
@@ -119,10 +117,10 @@ public class Commands extends Connection{
     }
     public static void main(String[] args) {
 //        createFolderInVps("C001");
-//        uploadFile("src/images/logo.png");
+        uploadFile("src/images/logo.png");
 //        downloadFile();
 //        renameFile("logo.png", "logo1.png");
-        deleteFile("logo1.png");
+//        deleteFile("logo1.png");
 
     }
 }

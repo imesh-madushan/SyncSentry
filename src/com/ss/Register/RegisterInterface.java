@@ -1,8 +1,9 @@
 package com.ss.Register;
 
+import com.ss.Database.DbQuery;
 import com.ss.Home.HomeInterface;
 import com.ss.Login.*;
-import com.ss.RemoteConnection.Commands;
+import com.ss.RemoteConnection.RemoteCmds;
 import javax.swing.*;
 import java.awt.*;
 
@@ -127,8 +128,8 @@ public class RegisterInterface extends JFrame{
                         String cusID = "C001";
                         JOptionPane.showMessageDialog(null, "User registered successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
                         dispose();
-                        new HomeInterface(email);
-                        Commands.createFolderInVps(cusID);  //Creating a folder in vps with customer ID for the first time
+                        new HomeInterface(email, cusID);
+                        RemoteCmds.createFolderInVps(cusID);  //Creating a folder in vps with customer ID for the first time
                     }
         });
 
@@ -138,9 +139,5 @@ public class RegisterInterface extends JFrame{
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setVisible(true);
-    }
-
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(RegisterInterface::new);
     }
 }

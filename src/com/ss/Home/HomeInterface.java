@@ -1,5 +1,6 @@
 package com.ss.Home;
 
+import com.ss.Database.DbQuery;
 import com.ss.Login.*;
 import com.ss.Home.*;
 import javax.swing.*;
@@ -8,8 +9,9 @@ import java.awt.*;
 public class HomeInterface extends JFrame {
     private String email;
     private static String cusID = "C001";
-    public HomeInterface(String email){
+    public HomeInterface(String email, String cusID){
         this.email = email;
+        this.cusID = cusID;
         initComponents();
     }
 
@@ -134,7 +136,7 @@ public class HomeInterface extends JFrame {
         });
 
         uploadButton.addActionListener(e -> {
-            FileHandler.uploadFile();
+            FileHandler.upload();
         });
 
 
@@ -182,9 +184,5 @@ public class HomeInterface extends JFrame {
         }
         scrollPane.setViewportView(wrapperPanel); // Set the wrapperPanel to the scrollPane as the view
 
-    }
-
-    public static void main(String[] args) {
-        new HomeInterface("root@mail.com");
     }
 }

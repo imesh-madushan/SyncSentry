@@ -1,5 +1,6 @@
 package com.ss.Login;
 
+import com.ss.Database.DbQuery;
 import com.ss.Register.*;
 import com.ss.Home.*;
 import javax.swing.*;
@@ -106,11 +107,10 @@ public class LoginInterface extends JFrame {
                     if(email == null || email.isEmpty() || password == null || password.isEmpty()) {
                         JOptionPane.showMessageDialog(this, "Please enter a valid username and password", "Error", JOptionPane.ERROR_MESSAGE);
                         return;
-                    } else if (email.equals("123") && password.equals("123")) {
-                        dispose();
-                        new HomeInterface(email);
-                    } else {
-                        JOptionPane.showMessageDialog(this, "Invalid username or password", "Error", JOptionPane.ERROR_MESSAGE);
+                    }
+                    else {
+                        DbQuery.validateLoginInDb(email, password);
+//                        JOptionPane.showMessageDialog(this, "Invalid username or password", "Error", JOptionPane.ERROR_MESSAGE);
                     }
         });
 
