@@ -5,6 +5,7 @@ import com.ss.Login.*;
 import com.ss.RemoteConnection.RemoteCmds;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import java.awt.*;
 
 public class HomeInterface extends JFrame {
@@ -16,9 +17,10 @@ public class HomeInterface extends JFrame {
 
     private static JPanel wrapperPanel;
     private static JScrollPane scrollPane;
-    private static JPanel usrnamePanel;
     private static JButton upgradeButton;
-
+    private static JLabel userName;
+    private static JPanel usrnamePanel;
+    private static JPanel planPanel;
     private static JLabel planLabel = new JLabel(plan);
 
     public HomeInterface(String email, String cusID, int Pro){
@@ -27,8 +29,11 @@ public class HomeInterface extends JFrame {
         this.isPro = Pro;
         this.wrapperPanel = new JPanel(new GridLayout(0, 1));
         this.scrollPane = new JScrollPane();
-        this.usrnamePanel = new JPanel(new BorderLayout());
         this.upgradeButton = new JButton("Upgrade to Pro");
+        this.planPanel = new JPanel(new BorderLayout());
+//        this.planPanel.setBackground(new Color(255, 255, 255, 0));
+        this.usrnamePanel = new JPanel(new BorderLayout());
+        this.userName = new JLabel(email);
         initComponents();
     }
 
@@ -47,8 +52,8 @@ public class HomeInterface extends JFrame {
                 int width = getWidth();
                 int height = getHeight();
 
-                Color startColor = new Color(189, 160, 229);
-                Color endColor = new Color(72, 136, 203);
+                Color startColor = new Color(109, 210, 225);
+                Color endColor = new Color(37, 122, 211);
 
                 GradientPaint gradient = new GradientPaint(0, 0, startColor, width, height, endColor);
 
@@ -67,7 +72,9 @@ public class HomeInterface extends JFrame {
         sideRight.setBackground(new Color(255, 255, 255, 0));
 
         // Creating elements for the left side--------------------------------------------------------------------------
-        ImageIcon image = new ImageIcon("src/Images/logo.png");
+//        ImageIcon image = new ImageIcon("src/Images/logo.png");
+        java.net.URL imageURL = getClass().getResource("/Images/logo.png");
+        ImageIcon image = new ImageIcon(imageURL);
         image.setImage(image.getImage().getScaledInstance(160, 160, Image.SCALE_SMOOTH));
         JLabel imageLabel = new JLabel(image);
         imageLabel.setBorder(BorderFactory.createEmptyBorder(20, 20, 15, 20));
@@ -76,30 +83,38 @@ public class HomeInterface extends JFrame {
         usrnamePanel.setBackground(new Color(255, 255, 255, 0));
         usrnamePanel.setBorder(BorderFactory.createEmptyBorder(10, 20, 290, 20));
 
-        JLabel userName = new JLabel(email);
+//        JLabel userName = new JLabel(email);
         userName.setFont(new Font("Arial", Font.PLAIN, 18));
         userName.setHorizontalAlignment(SwingConstants.CENTER);
         userName.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
 
         if (isPro == 1){
             plan = "Pro";
-//            JLabel planLabel = new JLabel(plan);
             planLabel.setText(plan);
-            planLabel.setFont(new Font("Arial", Font.PLAIN, 18));
+            planLabel.setFont(new Font("Arial", Font.PLAIN, 22));
+            planLabel.setForeground(Color.RED);
+            planLabel.setHorizontalAlignment(SwingConstants.CENTER);
+            planLabel.setBorder(BorderFactory.createEmptyBorder(0, 0, -45, 0));
+            planPanel.add(planLabel, BorderLayout.NORTH);
+            planPanel.add(planLabel, BorderLayout.CENTER);
+            planPanel.setBackground(new Color(255, 255, 255, 0));
+            System.out.println("Plan panel Refreshed");
         }
         else{
             plan = "Free Plan";
 //            JLabel planLabel = new JLabel(plan);
             planLabel.setText(plan);
             planLabel.setFont(new Font("Arial", Font.PLAIN, 18));
+            planLabel.setForeground(Color.BLACK);
 
-//            JButton upgradeButton = new JButton("Upgrade to Pro");
             upgradeButton.setFont(new Font("Arial", Font.PLAIN, 18));
             upgradeButton.setBackground(new Color(255, 255, 255));
 
             upgradeButton.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-            usrnamePanel.add(upgradeButton, BorderLayout.SOUTH);
-
+            planPanel.setBackground(new Color(255, 255, 255, 0));
+            planPanel.add(planLabel, BorderLayout.NORTH);
+            planPanel.add(planLabel, BorderLayout.CENTER);
+            planPanel.add(upgradeButton, BorderLayout.SOUTH);
             upgradeButton.addActionListener(e -> {
                new UpgradePopUp(cusID);
             });
@@ -107,7 +122,6 @@ public class HomeInterface extends JFrame {
 
         }
 
-        JLabel planLabel = new JLabel(plan);
         planLabel.setFont(new Font("Arial", Font.PLAIN, 18));
         planLabel.setHorizontalAlignment(SwingConstants.CENTER);
         planLabel.setBorder(BorderFactory.createEmptyBorder(0, 0, -45, 0));
@@ -155,7 +169,7 @@ public class HomeInterface extends JFrame {
         // Adding the elements to the panels
         sideLeft.add(imageLabel, BorderLayout.NORTH);
         usrnamePanel.add(userName, BorderLayout.NORTH);
-        usrnamePanel.add(planLabel);
+        usrnamePanel.add(planPanel);
         sideLeft.add(usrnamePanel, BorderLayout.CENTER);
         sideLeft.add(LogoutButton, BorderLayout.SOUTH);
 
@@ -254,41 +268,38 @@ public class HomeInterface extends JFrame {
     }
 
     public static void reFreshWrapper(){ // used to refresh the home interface for every delete and rename
-        SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
+//        SwingUtilities.invokeLater(new Runnable() {
+//            public void run() {
                 wrapperPanel.removeAll();
                 wrapperPanel.revalidate();
                 wrapperPanel.repaint();
                 new DbQuery().readFilesDataInDb(cusID); //recreate the items in the wrapper panel
                 System.out.println("Wrapper panel Refreshed");
-            }
-        });
+//            }
+//        });
     }
 
     public static void reFreshPlanPanel(){ // used to refresh plan panel if upgrading to pro
-        SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
+//        SwingUtilities.invokeLater(new Runnable() {
+//            public void run() {
+                isPro = 1;
                 planLabel.setText("Pro");
-                usrnamePanel.remove(upgradeButton);
-                wrapperPanel.revalidate();
-                wrapperPanel.repaint();
-                System.out.println("username panel Refreshed");
-            }
-        });
+                planLabel.setFont(new Font("Arial", Font.PLAIN, 22));
+                planLabel.setForeground(Color.RED);
+                planPanel.remove(upgradeButton);
+                planPanel.revalidate();
+                planPanel.repaint();
+                planPanel.setBackground(new Color(255, 255, 255, 0));
+                System.out.println("Plan panel Refreshed");
+//            }
+//        });
     }
 
-//    public static void reOpenHome(){ // This function will reopen the home interface if pro plan is not upgraded
-//        new HomeInterface(email, cusID, isPro);
-//    }
-
-//    public static void openProHome(){ // This function will reopen the home interface if pro plan is upgraded
-//        isPro = 1;
-//        new HomeInterface(email, cusID, isPro);
-//    }
-
-
+    public static void showMsgsucess(String msg){
+        JOptionPane.showMessageDialog(null, msg, "Success", JOptionPane.INFORMATION_MESSAGE);
+    }
 
     public static void main(String[] args) {
-        new HomeInterface("1@emil.com", "C001", 0);
+        new HomeInterface("1@emil.com", "C001", 1);
     }
 }

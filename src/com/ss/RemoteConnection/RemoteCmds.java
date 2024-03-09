@@ -74,6 +74,7 @@ public class RemoteCmds extends Connection{
             sftpDownload.disconnect();
 
             System.out.println("File has downloaded successfully");
+            HomeInterface.showMsgsucess("File has downloaded successfully to C:/Users/" + localUser + "/Desktop/SyncSentry Downloads/");
         }
         catch (JSchException e) {
             throw new RuntimeException(e);

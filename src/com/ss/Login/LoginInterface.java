@@ -25,8 +25,8 @@ public class LoginInterface extends JFrame {
                 int width = getWidth();
                 int height = getHeight();
 
-                Color startColor = new Color(189, 160, 229);
-                Color endColor = new Color(72, 136, 203);
+                Color startColor = new Color(109, 210, 225);
+                Color endColor = new Color(37, 122, 211);
 
                 GradientPaint gradient = new GradientPaint(0, 0, startColor, width, height, endColor);
 
@@ -91,7 +91,9 @@ public class LoginInterface extends JFrame {
         appNameLabel.setHorizontalAlignment(SwingConstants.CENTER);
         imagePanel.add(appNameLabel, BorderLayout.NORTH);
 
-        ImageIcon image = new ImageIcon("src/Images/logo.png");
+//        ImageIcon image = new ImageIcon("src/Images/logo.png");
+        java.net.URL imageURL = getClass().getResource("/Images/logo.png");
+        ImageIcon image = new ImageIcon(imageURL);
         JLabel imageLabel = new JLabel(image);
         imageLabel.setBorder(BorderFactory.createEmptyBorder(0, 0, 85, 0));
         imagePanel.add(imageLabel, BorderLayout.SOUTH);
