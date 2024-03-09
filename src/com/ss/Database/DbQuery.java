@@ -54,8 +54,8 @@ public class DbQuery extends DbConnection{
             preStatement.setString(5, fileType);
             preStatement.executeUpdate();
 
-//            new HomeInterface();
             System.out.println("File inserted successfully");
+            HomeInterface.reFreshWrapper();// Refresh the wrapperpanel which displaying the files
         }
         catch (SQLException e) {
             e.printStackTrace();
@@ -70,7 +70,8 @@ public class DbQuery extends DbConnection{
             preStatement.setString(1, newName);
             preStatement.setString(2, fileId);
             preStatement.executeUpdate();
-            System.out.println("File renamed successfully");
+            System.out.println("File renamed successfully in db");
+            HomeInterface.reFreshWrapper(); // Refresh the wrapperpanel which displaying the files
         }
         catch (SQLException e) {
             e.printStackTrace();
@@ -85,6 +86,7 @@ public class DbQuery extends DbConnection{
             preStatement.setString(1, fileID);
             preStatement.executeUpdate();
             System.out.println("File deleted successfully");
+            HomeInterface.reFreshWrapper();// Refresh the wrapperpanel which displaying the files
         }
         catch (SQLException e) {
             e.printStackTrace();

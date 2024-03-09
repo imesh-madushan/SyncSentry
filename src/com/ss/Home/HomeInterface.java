@@ -2,7 +2,6 @@ package com.ss.Home;
 
 import com.ss.Database.DbQuery;
 import com.ss.Login.*;
-import com.ss.Home.*;
 import com.ss.RemoteConnection.RemoteCmds;
 
 import javax.swing.*;
@@ -15,24 +14,21 @@ public class HomeInterface extends JFrame {
 
     private static String plan;
 
-    private static JPanel wrapperPanel = new JPanel(new GridLayout(0, 1));
-    private static JScrollPane scrollPane = new JScrollPane();
-//    private static JPanel usrnamePanel = new JPanel(new BorderLayout());
-//    private static JLabel planLabel = new JLabel(plan);
-//    private static JButton upgradeButton = new JButton();
+    private static JPanel wrapperPanel;
+    private static JScrollPane scrollPane;
+    private static JPanel usrnamePanel;
+    private static JButton upgradeButton;
 
-
+    private static JLabel planLabel = new JLabel(plan);
 
     public HomeInterface(String email, String cusID, int Pro){
         this.email = email;
         this.cusID = cusID;
         this.isPro = Pro;
-        initComponents();
-    }
-
-    public HomeInterface(String cusID, int Pro){
-        this.cusID = cusID;
-        this.isPro = Pro;
+        this.wrapperPanel = new JPanel(new GridLayout(0, 1));
+        this.scrollPane = new JScrollPane();
+        this.usrnamePanel = new JPanel(new BorderLayout());
+        this.upgradeButton = new JButton("Upgrade to Pro");
         initComponents();
     }
 
@@ -76,7 +72,7 @@ public class HomeInterface extends JFrame {
         JLabel imageLabel = new JLabel(image);
         imageLabel.setBorder(BorderFactory.createEmptyBorder(20, 20, 15, 20));
 
-        JPanel usrnamePanel = new JPanel(new BorderLayout());
+//        JPanel usrnamePanel = new JPanel(new BorderLayout());
         usrnamePanel.setBackground(new Color(255, 255, 255, 0));
         usrnamePanel.setBorder(BorderFactory.createEmptyBorder(10, 20, 290, 20));
 
@@ -87,15 +83,17 @@ public class HomeInterface extends JFrame {
 
         if (isPro == 1){
             plan = "Pro";
-            JLabel planLabel = new JLabel(plan);
+//            JLabel planLabel = new JLabel(plan);
+            planLabel.setText(plan);
             planLabel.setFont(new Font("Arial", Font.PLAIN, 18));
         }
         else{
             plan = "Free Plan";
-            JLabel planLabel = new JLabel(plan);
+//            JLabel planLabel = new JLabel(plan);
+            planLabel.setText(plan);
             planLabel.setFont(new Font("Arial", Font.PLAIN, 18));
 
-            JButton upgradeButton = new JButton("Upgrade to Pro");
+//            JButton upgradeButton = new JButton("Upgrade to Pro");
             upgradeButton.setFont(new Font("Arial", Font.PLAIN, 18));
             upgradeButton.setBackground(new Color(255, 255, 255));
 
@@ -104,7 +102,6 @@ public class HomeInterface extends JFrame {
 
             upgradeButton.addActionListener(e -> {
                new UpgradePopUp(cusID);
-               this.dispose();
             });
 
 
@@ -136,7 +133,7 @@ public class HomeInterface extends JFrame {
         labelHead.setBorder(BorderFactory.createEmptyBorder(18, 0, 18, 0));
 
 //        JPanel wrapperPanel = new JPanel(new GridLayout(0, 1));  // This is created at the top
-        wrapperPanel.setBackground(new Color(255, 255, 255, 0));
+        wrapperPanel.setBackground(new Color(255, 255, 255));
 //        JScrollPane scrollPane = new JScrollPane();
         scrollPane.setBackground(new Color(255, 255, 255));
 
@@ -182,8 +179,6 @@ public class HomeInterface extends JFrame {
 
         uploadButton.addActionListener(e -> {
             FileHandler.upload(cusID, isPro);
-            this.dispose();
-            new HomeInterface(email, cusID, isPro);
         });
 
 
@@ -197,14 +192,11 @@ public class HomeInterface extends JFrame {
         scrollPane.setViewportView(wrapperPanel); // Set the wrapperPanel to the scrollPane as the view
     }
 
-    public void readFilesDataInDbCaller(){
-        wrapperPanel.removeAll(); // Remove all the children from the wrapperPanel
-        new DbQuery().readFilesDataInDb(cusID);
-    }
+
+
     public static void addDataToWrapper(String fName, String fSize, String fID, String fType){ // this function will add the files to the wrapperPanel and called in DbQuery.java readFilesDataInDb() function
         JPanel filePanel = new JPanel(new GridLayout(0, 5));
         filePanel.setName(fID); // Set the name of the panel to the file ID for easy identification
-        filePanel.setBackground(new Color(255, 255, 255, 0));
         filePanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
         JLabel fileName = new JLabel(fName+fType);
@@ -248,30 +240,51 @@ public class HomeInterface extends JFrame {
             String newName = JOptionPane.showInputDialog("Enter the new name for the file");
             if (newName != null){
                 RemoteCmds.renameFile(fName, newName, fID, fType);
-//                disposeCurrent();
             }
         });
 
         deleteButton.addActionListener(e -> {
-            System.out.println(fName); // Get the name of the panel, which is absolutely the file ID
-            System.out.println(fID);
             RemoteCmds.deleteFile(fName,fID,fType);
         });
 
     }
 
-//    private static void disposeCurrent(){ //
-//        dispose();
+    public void readFilesDataInDbCaller(){ // This function will call the readFilesDataInDb() function in DbQuery.java
+        new DbQuery().readFilesDataInDb(cusID);
+    }
+
+    public static void reFreshWrapper(){ // used to refresh the home interface for every delete and rename
+        SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+                wrapperPanel.removeAll();
+                wrapperPanel.revalidate();
+                wrapperPanel.repaint();
+                new DbQuery().readFilesDataInDb(cusID); //recreate the items in the wrapper panel
+                System.out.println("Wrapper panel Refreshed");
+            }
+        });
+    }
+
+    public static void reFreshPlanPanel(){ // used to refresh plan panel if upgrading to pro
+        SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+                planLabel.setText("Pro");
+                usrnamePanel.remove(upgradeButton);
+                wrapperPanel.revalidate();
+                wrapperPanel.repaint();
+                System.out.println("username panel Refreshed");
+            }
+        });
+    }
+
+//    public static void reOpenHome(){ // This function will reopen the home interface if pro plan is not upgraded
+//        new HomeInterface(email, cusID, isPro);
 //    }
 
-    public static void reOpenHome(){ // This function will reopen the home interface if pro plan is not upgraded
-        new HomeInterface(email, cusID, isPro);
-    }
-
-    public static void openProHome(){ // This function will reopen the home interface if pro plan is upgraded
-        isPro = 1;
-        new HomeInterface(email, cusID, isPro);
-    }
+//    public static void openProHome(){ // This function will reopen the home interface if pro plan is upgraded
+//        isPro = 1;
+//        new HomeInterface(email, cusID, isPro);
+//    }
 
 
 

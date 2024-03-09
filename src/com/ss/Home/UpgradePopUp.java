@@ -23,7 +23,7 @@ public class UpgradePopUp extends JFrame {
         JPanel headerPanel = new JPanel(new BorderLayout());
         headerPanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 20, 0));
         headerPanel.setBackground(new Color(0,0,0, 200));
-        JLabel upgradeLabel = new JLabel("Upgrade to Pro to Remove Upload Limits");
+        JLabel upgradeLabel = new JLabel("Upgrade to Pro to Remove Upload Limits, 10$ per month");
         upgradeLabel.setFont(new Font("Arial", Font.PLAIN, 16));
         upgradeLabel.setForeground(Color.WHITE);
         upgradeLabel.setBorder(BorderFactory.createEmptyBorder(18, 0, 0, 0));
@@ -87,9 +87,8 @@ public class UpgradePopUp extends JFrame {
                 String upgradingStatus = new DbQuery().updateToPro(cusID, 1);
                 if( upgradingStatus == "success"){
                     JOptionPane.showMessageDialog(null, "Thank you for upgrading to Pro!", "Success", JOptionPane.INFORMATION_MESSAGE);
-//                    HomeInterface.close(); //call the close method in HomeInterface to close opend home window
-                    HomeInterface.openProHome();
                     dispose();
+                    HomeInterface.reFreshPlanPanel();
                 }
                 else {
                     JOptionPane.showMessageDialog(null, "Error occurred while upgrading to Pro", "Error", JOptionPane.ERROR_MESSAGE);
@@ -104,11 +103,11 @@ public class UpgradePopUp extends JFrame {
         setVisible(true);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
-        addWindowListener(new WindowAdapter() { // function to reOpen HomeInterface if popup is closed
-            @Override
-            public void windowClosing(WindowEvent e) {
-                HomeInterface.reOpenHome();
-            }
-        });
+//        addWindowListener(new WindowAdapter() { // function to reOpen HomeInterface if popup is closed
+//            @Override
+//            public void windowClosing(WindowEvent e) {
+//                HomeInterface.reOpenHome();
+//            }
+//        });
     }
 }

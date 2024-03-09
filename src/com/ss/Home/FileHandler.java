@@ -20,13 +20,8 @@ public class FileHandler {
             System.out.println("File selected");
             System.out.println("Selected File size "+file.length()/1024 + " KB");
 
-
-//            System.out.println("Selected File name: " + fileNameWithoutExtension);
-
             System.out.println("Selected File path "+file.getAbsolutePath());
             System.out.println("Selected File type "+fileChooser.getTypeDescription(file));
-
-
 
             int fileSize = (int) file.length();
             int fileSizeMB = fileSize/(1024*1024);

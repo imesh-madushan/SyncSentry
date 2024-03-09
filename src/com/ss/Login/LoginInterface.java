@@ -109,9 +109,10 @@ public class LoginInterface extends JFrame {
                 return;
             }
             else {
-                String status = new DbQuery().validateLoginInDb(email, password);
-                if (status == "success"){
+                String status = new DbQuery().validateLoginInDb(email, password); //check the login credentials in the database
+                if (status == "success"){ // if the login successful
                     dispose();
+                    JOptionPane.showMessageDialog(this, "Login successful", "Success", JOptionPane.INFORMATION_MESSAGE);
                 }
                 else {
                     JOptionPane.showMessageDialog(this, "Invalid username or password", "Error", JOptionPane.ERROR_MESSAGE);

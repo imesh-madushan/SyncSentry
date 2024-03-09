@@ -93,8 +93,9 @@ public class RemoteCmds extends Connection{
 
             sftpRename.rename(oldPath, newPath); //rename the file in server
             sessionRename.disconnect();
+            System.out.println(oldName+" renamed to "+newName+" successfully in remote server");
             new DbQuery().renameFileInDb(fileId, newName);
-            System.out.println(oldName+" renamed to "+newName+" successfully");
+
         }
         catch (JSchException e) {
             throw new RuntimeException(e);

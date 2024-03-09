@@ -125,8 +125,8 @@ public class RegisterInterface extends JFrame{
             } else {
                 String status = new DbQuery().registerUserInDb(name, email, password);
                 if (status == "success"){
-                    JOptionPane.showMessageDialog(null, "User registered successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
                     dispose();
+                    JOptionPane.showMessageDialog(null, "User registered successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
                 }
                 else {
                     JOptionPane.showMessageDialog(this, "Invalid username or password", "Error", JOptionPane.ERROR_MESSAGE);
