@@ -7,16 +7,16 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 class DbConnection{
-    private static Connection dbCon;
-    private  static Statement cmdSql;
-    private static final String dbUrl = "jdbc:mysql://oneoclock.lifezeeds.me:3306/syncsentry";
-    private static final String dbUser = "imesh";
-    private static  final String dbPasswd = "imesh";
+    private Connection dbCon;
+    private Statement cmdSql;
+    private final String dbUrl = "jdbc:mysql://oneoclock.lifezeeds.me:3306/syncsentry";
+    private final String dbUser = "imesh";
+    private final String dbPasswd = "imesh";
 
     protected DbConnection(){
     }
 
-    protected static Connection createDbCon(){
+    protected Connection createDbCon(){
         try {
             DriverManager.registerDriver(new Driver());
             dbCon = DriverManager.getConnection(dbUrl, dbUser, dbPasswd);

@@ -8,10 +8,29 @@ import java.awt.*;
 
 public class HomeInterface extends JFrame {
     private String email;
-    private static String cusID = "C001";
-    public HomeInterface(String email, String cusID){
+    private static String cusID;
+    private static int isPro = 0;
+
+    private static String plan;
+
+    private static JPanel wrapperPanel = new JPanel(new GridLayout(0, 1));
+    private static JScrollPane scrollPane = new JScrollPane();
+//    private static JPanel usrnamePanel = new JPanel(new BorderLayout());
+//    private static JLabel planLabel = new JLabel(plan);
+//    private static JButton upgradeButton = new JButton();
+
+
+
+    public HomeInterface(String email, String cusID, int Pro){
         this.email = email;
         this.cusID = cusID;
+        this.isPro = Pro;
+        initComponents();
+    }
+
+    public HomeInterface(String cusID, int Pro){
+        this.cusID = cusID;
+        this.isPro = Pro;
         initComponents();
     }
 
@@ -57,23 +76,47 @@ public class HomeInterface extends JFrame {
 
         JPanel usrnamePanel = new JPanel(new BorderLayout());
         usrnamePanel.setBackground(new Color(255, 255, 255, 0));
+        usrnamePanel.setBorder(BorderFactory.createEmptyBorder(10, 20, 290, 20));
 
         JLabel userName = new JLabel(email);
         userName.setFont(new Font("Arial", Font.PLAIN, 18));
         userName.setHorizontalAlignment(SwingConstants.CENTER);
         userName.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
 
-        JLabel planLabel = new JLabel("Free Plan");
+        if (isPro == 1){
+            plan = "Pro";
+            JLabel planLabel = new JLabel(plan);
+            planLabel.setFont(new Font("Arial", Font.PLAIN, 18));
+        }
+        else{
+            plan = "Free Plan";
+            JLabel planLabel = new JLabel(plan);
+            planLabel.setFont(new Font("Arial", Font.PLAIN, 18));
+
+            JButton upgradeButton = new JButton("Upgrade to Pro");
+            upgradeButton.setFont(new Font("Arial", Font.PLAIN, 18));
+            upgradeButton.setBackground(new Color(255, 255, 255));
+
+            upgradeButton.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+            usrnamePanel.add(upgradeButton, BorderLayout.SOUTH);
+
+            upgradeButton.addActionListener(e -> {
+               new UpgradePopUp(cusID);
+               this.dispose();
+            });
+
+
+        }
+
+        JLabel planLabel = new JLabel(plan);
         planLabel.setFont(new Font("Arial", Font.PLAIN, 18));
         planLabel.setHorizontalAlignment(SwingConstants.CENTER);
-        planLabel.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
+        planLabel.setBorder(BorderFactory.createEmptyBorder(0, 0, -45, 0));
 
         JButton LogoutButton = new JButton("Logout");
         LogoutButton.setFont(new Font("Arial", Font.PLAIN, 18));
         LogoutButton.setBackground(new Color(255, 255, 255));
         LogoutButton.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-
-
 
         // Creating elements for the right side--------------------------------------------------------------------------
         JLabel appName = new JLabel("Sync Sentry");
@@ -90,9 +133,9 @@ public class HomeInterface extends JFrame {
         labelHead.setHorizontalAlignment(SwingConstants.CENTER);
         labelHead.setBorder(BorderFactory.createEmptyBorder(18, 0, 18, 0));
 
-        JPanel wrapperPanel = new JPanel(new GridLayout(0, 1));
+//        JPanel wrapperPanel = new JPanel(new GridLayout(0, 1));  // This is created at the top
         wrapperPanel.setBackground(new Color(255, 255, 255, 0));
-        JScrollPane scrollPane = new JScrollPane();
+//        JScrollPane scrollPane = new JScrollPane();
         scrollPane.setBackground(new Color(255, 255, 255));
 
         JPanel uploadPanel = new JPanel(new FlowLayout());
@@ -146,43 +189,61 @@ public class HomeInterface extends JFrame {
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setVisible(true);
-
-
-        //Creating the dynamic file panels
-        for (int i = 0; i < 10; i++) {
-            JPanel filePanel = new JPanel(new GridLayout(0, 4));
-            filePanel.setBackground(new Color(255, 255, 255, 0));
-            filePanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-
-            JLabel fileName = new JLabel("File " + i);
-            fileName.setFont(new Font("Arial", Font.PLAIN, 18));
-            fileName.setHorizontalAlignment(SwingConstants.CENTER);
-            filePanel.add(fileName);
-
-            JButton downloadButton = new JButton("Rename");
-            downloadButton.setForeground(new Color(8, 173, 35));
-            downloadButton.setFont(new Font("Arial", Font.PLAIN, 18));
-            downloadButton.setBackground(new Color(255, 255, 255));
-            downloadButton.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-            filePanel.add(downloadButton);
-
-            JButton renameButton = new JButton("Download");
-            renameButton.setForeground(Color.blue);
-            renameButton.setFont(new Font("Arial", Font.PLAIN, 18));
-            renameButton.setBackground(new Color(255, 255, 255));
-            renameButton.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-            filePanel.add(renameButton);
-
-            JButton deleteButton = new JButton("Delete");
-            deleteButton.setForeground(Color.RED);
-            deleteButton.setFont(new Font("Arial", Font.PLAIN, 18));
-            deleteButton.setBackground(new Color(255, 255, 255));
-            deleteButton.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-            filePanel.add(deleteButton);
-
-            wrapperPanel.add(filePanel);
-        }
+        readFilesDataInDbCaller(); // Call the function to read the files data from the database
         scrollPane.setViewportView(wrapperPanel); // Set the wrapperPanel to the scrollPane as the view
+    }
 
+    public static void readFilesDataInDbCaller(){
+        wrapperPanel.removeAll(); // Remove all the children from the wrapperPanel
+        new DbQuery().readFilesDataInDb(cusID);
+    }
+    public static void addDataToWrapper(String fName, String fSize, String fID){ // this function will add the files to the wrapperPanel and called in DbQuery.java readFilesDataInDb() function
+        JPanel filePanel = new JPanel(new GridLayout(0, 5));
+        filePanel.setName(fID); // Set the name of the panel to the file ID for easy identification
+        filePanel.setBackground(new Color(255, 255, 255, 0));
+        filePanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+
+        JLabel fileName = new JLabel(fName);
+        fileName.setFont(new Font("Arial", Font.PLAIN, 18));
+        fileName.setHorizontalAlignment(SwingConstants.CENTER);
+        filePanel.add(fileName);
+
+        JLabel fileSize = new JLabel("Size: "+fSize+" MB");
+        fileSize.setFont(new Font("Arial", Font.PLAIN, 16));
+        fileSize.setHorizontalAlignment(SwingConstants.CENTER);
+        filePanel.add(fileSize);
+
+        JButton downloadButton = new JButton("Rename");
+        downloadButton.setForeground(new Color(8, 173, 35));
+        downloadButton.setFont(new Font("Arial", Font.PLAIN, 18));
+        downloadButton.setBackground(new Color(255, 255, 255));
+        downloadButton.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        filePanel.add(downloadButton);
+
+        JButton renameButton = new JButton("Download");
+        renameButton.setForeground(Color.blue);
+        renameButton.setFont(new Font("Arial", Font.PLAIN, 18));
+        renameButton.setBackground(new Color(255, 255, 255));
+        renameButton.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        filePanel.add(renameButton);
+
+        JButton deleteButton = new JButton("Delete");
+        deleteButton.setForeground(Color.RED);
+        deleteButton.setFont(new Font("Arial", Font.PLAIN, 18));
+        deleteButton.setBackground(new Color(255, 255, 255));
+        deleteButton.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        filePanel.add(deleteButton);
+
+        wrapperPanel.add(filePanel);
+
+        deleteButton.addActionListener(e -> {
+            System.out.println(filePanel.getName());
+//            new DbQuery().deleteFileFromDb(fID);
+//            readFilesDataInDbCaller();
+        });
+    }
+
+    public static void main(String[] args) {
+        new HomeInterface("1@emil.com", "C001", 0);
     }
 }

@@ -116,21 +116,22 @@ public class RegisterInterface extends JFrame{
         });
 
         registerButton.addActionListener(e -> {
-                    String name = nameField.getText();
-                    String email = usernameField.getText();
-                    String password = new String(passwordField.getPassword());
+            String name = nameField.getText();
+            String email = usernameField.getText();
+            String password = new String(passwordField.getPassword());
 
-                    if (name.isEmpty() || email.isEmpty() || password.isEmpty()) {
-                        JOptionPane.showMessageDialog(null, "Please fill in all the fields", "Error", JOptionPane.ERROR_MESSAGE);
-                    } else {
-                        //Here to check if already in database
-                        //Here to generate customer ID
-                        String cusID = "C001";
-                        JOptionPane.showMessageDialog(null, "User registered successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
-                        dispose();
-                        new HomeInterface(email, cusID);
-                        RemoteCmds.createFolderInVps(cusID);  //Creating a folder in vps with customer ID for the first time
-                    }
+            if (name.isEmpty() || email.isEmpty() || password.isEmpty()) {
+                JOptionPane.showMessageDialog(null, "Please fill in all the fields", "Error", JOptionPane.ERROR_MESSAGE);
+            } else {
+                String status = new DbQuery().registerUserInDb(name, email, password);
+                if (status == "success"){
+                    JOptionPane.showMessageDialog(null, "User registered successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
+                    dispose();
+                }
+                else {
+                    JOptionPane.showMessageDialog(this, "Invalid username or password", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
         });
 
         setTitle("Register");
@@ -139,5 +140,7 @@ public class RegisterInterface extends JFrame{
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setVisible(true);
+
+
     }
 }

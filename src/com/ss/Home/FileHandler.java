@@ -11,13 +11,21 @@ public class FileHandler {
         fileChooser.showOpenDialog(null); // Show the file chooser
         File file = fileChooser.getSelectedFile(); // Get the file
 
-        System.out.println("Selected File size "+file.length()/1024 + " KB");
-        System.out.println("Selected File name "+file.getName());
-        System.out.println("Selected File path "+file.getAbsolutePath());
-        System.out.println("Selected File type "+fileChooser.getTypeDescription(file));
+        if (file == null) {
+            System.out.println("No file selected");
+            return;
+        }
+        else {
+            System.out.println("File selected");
+            System.out.println("Selected File size "+file.length()/1024 + " KB");
+            System.out.println("Selected File name "+file.getName());
+            System.out.println("Selected File path "+file.getAbsolutePath());
+            System.out.println("Selected File type "+fileChooser.getTypeDescription(file));
 //        System.out.println("The folder size is "+file.getParentFile().length()/(1024*1024) + " MB");
 
-        RemoteCmds.uploadFile(file.getAbsolutePath()); //call the upload function by sending selected file path
+            RemoteCmds.uploadFile(file.getAbsolutePath()); //call the upload function by sending selected file path
+        }
+
     }
 
     public static void downloadFile() {

@@ -101,17 +101,22 @@ public class LoginInterface extends JFrame {
 
         // Adding action listeners to the buttons
         loginButton.addActionListener(e -> {
-                    String email = emailField.getText();
-                    String password = new String(passwordField.getPassword());
+            String email = emailField.getText();
+            String password = new String(passwordField.getPassword());
 
-                    if(email == null || email.isEmpty() || password == null || password.isEmpty()) {
-                        JOptionPane.showMessageDialog(this, "Please enter a valid username and password", "Error", JOptionPane.ERROR_MESSAGE);
-                        return;
-                    }
-                    else {
-                        DbQuery.validateLoginInDb(email, password);
-//                        JOptionPane.showMessageDialog(this, "Invalid username or password", "Error", JOptionPane.ERROR_MESSAGE);
-                    }
+            if(email == null || email.isEmpty() || password == null || password.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Please enter a valid username and password", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            else {
+                String status = new DbQuery().validateLoginInDb(email, password);
+                if (status == "success"){
+                    dispose();
+                }
+                else {
+                    JOptionPane.showMessageDialog(this, "Invalid username or password", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
         });
 
         registerButton.addActionListener(e -> {
