@@ -3,11 +3,13 @@ package com.ss.Home;
 import com.ss.Database.DbQuery;
 import com.ss.Login.*;
 import com.ss.Home.*;
+import com.ss.RemoteConnection.RemoteCmds;
+
 import javax.swing.*;
 import java.awt.*;
 
 public class HomeInterface extends JFrame {
-    private String email;
+    private static String email;
     private static String cusID;
     private static int isPro = 0;
 
@@ -179,7 +181,9 @@ public class HomeInterface extends JFrame {
         });
 
         uploadButton.addActionListener(e -> {
-            FileHandler.upload();
+            FileHandler.upload(cusID, isPro);
+            this.dispose();
+            new HomeInterface(email, cusID, isPro);
         });
 
 
@@ -193,17 +197,17 @@ public class HomeInterface extends JFrame {
         scrollPane.setViewportView(wrapperPanel); // Set the wrapperPanel to the scrollPane as the view
     }
 
-    public static void readFilesDataInDbCaller(){
+    public void readFilesDataInDbCaller(){
         wrapperPanel.removeAll(); // Remove all the children from the wrapperPanel
         new DbQuery().readFilesDataInDb(cusID);
     }
-    public static void addDataToWrapper(String fName, String fSize, String fID){ // this function will add the files to the wrapperPanel and called in DbQuery.java readFilesDataInDb() function
+    public static void addDataToWrapper(String fName, String fSize, String fID, String fType){ // this function will add the files to the wrapperPanel and called in DbQuery.java readFilesDataInDb() function
         JPanel filePanel = new JPanel(new GridLayout(0, 5));
         filePanel.setName(fID); // Set the name of the panel to the file ID for easy identification
         filePanel.setBackground(new Color(255, 255, 255, 0));
         filePanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
-        JLabel fileName = new JLabel(fName);
+        JLabel fileName = new JLabel(fName+fType);
         fileName.setFont(new Font("Arial", Font.PLAIN, 18));
         fileName.setHorizontalAlignment(SwingConstants.CENTER);
         filePanel.add(fileName);
@@ -213,14 +217,14 @@ public class HomeInterface extends JFrame {
         fileSize.setHorizontalAlignment(SwingConstants.CENTER);
         filePanel.add(fileSize);
 
-        JButton downloadButton = new JButton("Rename");
+        JButton downloadButton = new JButton("Download");
         downloadButton.setForeground(new Color(8, 173, 35));
         downloadButton.setFont(new Font("Arial", Font.PLAIN, 18));
         downloadButton.setBackground(new Color(255, 255, 255));
         downloadButton.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         filePanel.add(downloadButton);
 
-        JButton renameButton = new JButton("Download");
+        JButton renameButton = new JButton("Rename");
         renameButton.setForeground(Color.blue);
         renameButton.setFont(new Font("Arial", Font.PLAIN, 18));
         renameButton.setBackground(new Color(255, 255, 255));
@@ -236,12 +240,40 @@ public class HomeInterface extends JFrame {
 
         wrapperPanel.add(filePanel);
 
-        deleteButton.addActionListener(e -> {
-            System.out.println(filePanel.getName());
-//            new DbQuery().deleteFileFromDb(fID);
-//            readFilesDataInDbCaller();
+        downloadButton.addActionListener(e -> {
+            RemoteCmds.downloadFile(fName, fType);
         });
+
+        renameButton.addActionListener(e -> {
+            String newName = JOptionPane.showInputDialog("Enter the new name for the file");
+            if (newName != null){
+                RemoteCmds.renameFile(fName, newName, fID, fType);
+//                disposeCurrent();
+            }
+        });
+
+        deleteButton.addActionListener(e -> {
+            System.out.println(fName); // Get the name of the panel, which is absolutely the file ID
+            System.out.println(fID);
+            RemoteCmds.deleteFile(fName,fID,fType);
+        });
+
     }
+
+//    private static void disposeCurrent(){ //
+//        dispose();
+//    }
+
+    public static void reOpenHome(){ // This function will reopen the home interface if pro plan is not upgraded
+        new HomeInterface(email, cusID, isPro);
+    }
+
+    public static void openProHome(){ // This function will reopen the home interface if pro plan is upgraded
+        isPro = 1;
+        new HomeInterface(email, cusID, isPro);
+    }
+
+
 
     public static void main(String[] args) {
         new HomeInterface("1@emil.com", "C001", 0);

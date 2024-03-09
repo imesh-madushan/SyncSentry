@@ -88,7 +88,7 @@ public class UpgradePopUp extends JFrame {
                 if( upgradingStatus == "success"){
                     JOptionPane.showMessageDialog(null, "Thank you for upgrading to Pro!", "Success", JOptionPane.INFORMATION_MESSAGE);
 //                    HomeInterface.close(); //call the close method in HomeInterface to close opend home window
-                    new HomeInterface(cusID, 1);
+                    HomeInterface.openProHome();
                     dispose();
                 }
                 else {
@@ -107,7 +107,7 @@ public class UpgradePopUp extends JFrame {
         addWindowListener(new WindowAdapter() { // function to reOpen HomeInterface if popup is closed
             @Override
             public void windowClosing(WindowEvent e) {
-                new HomeInterface(cusID, 1);
+                HomeInterface.reOpenHome();
             }
         });
     }

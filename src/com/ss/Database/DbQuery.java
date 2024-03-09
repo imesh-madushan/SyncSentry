@@ -24,7 +24,11 @@ public class DbQuery extends DbConnection{
             preStatement.setString(1, cusID);
             result = preStatement.executeQuery();
             while (result.next()){
-                HomeInterface.addDataToWrapper(result.getString("F_Name"), result.getString("F_Size"), result.getString("F_ID") );
+                String fname = result.getString("F_Name");
+                String fsize = result.getString("F_Size");
+                String fid = result.getString("F_ID");
+                String ftype = result.getString("F_Type");
+                HomeInterface.addDataToWrapper(fname, fsize, fid, ftype);
             }
         }
         catch (SQLException e) {
@@ -32,6 +36,60 @@ public class DbQuery extends DbConnection{
         }
     }
 
+    public void insertFileInDb(String cusID, String fileName, int fileSize, String fileType){
+        con = createDbCon();
+        String sql = "INSERT INTO file (C_ID, F_Name, F_Size, F_ID, F_Type) VALUES (?, ?, ?, ?, ?)";
+        try {
+            String fileID = genarateFileID();
+
+            if (fileID == null){// regenerating file ID if got a null while genarating
+                fileID = genarateFileID();
+            }
+
+            preStatement = con.prepareStatement(sql);
+            preStatement.setString(1, cusID);
+            preStatement.setString(2, fileName);
+            preStatement.setInt(3, fileSize);
+            preStatement.setString(4, fileID);
+            preStatement.setString(5, fileType);
+            preStatement.executeUpdate();
+
+//            new HomeInterface();
+            System.out.println("File inserted successfully");
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void renameFileInDb(String fileId, String newName){
+        con = createDbCon();
+        String sql = "UPDATE file SET F_Name = ? WHERE F_ID = ?";
+        try {
+            preStatement = con.prepareStatement(sql);
+            preStatement.setString(1, newName);
+            preStatement.setString(2, fileId);
+            preStatement.executeUpdate();
+            System.out.println("File renamed successfully");
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void deleteFileInDb(String fileID){
+        con = createDbCon();
+        String sql = "DELETE FROM file WHERE F_ID = ?";
+        try {
+            preStatement = con.prepareStatement(sql);
+            preStatement.setString(1, fileID);
+            preStatement.executeUpdate();
+            System.out.println("File deleted successfully");
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
     public String validateLoginInDb(String email, String password){
         con = createDbCon();
 
@@ -123,7 +181,8 @@ public class DbQuery extends DbConnection{
         }
         return null;
     }
-    private String genarateCusID(){
+
+    private String genarateCusID(){ // Generate a new customer ID
         StringBuilder cusID = new StringBuilder("Cus");
         String chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
         for (int i = 0; i < 7; i++) {
@@ -142,6 +201,33 @@ public class DbQuery extends DbConnection{
             }
             else{
                 return cusID.toString();
+            }
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    private String genarateFileID(){ // Generate a new file ID
+        StringBuilder fileID = new StringBuilder("File");
+        String chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        for (int i = 0; i < 11; i++) {
+            int index = (int) (chars.length() * Math.random());
+            fileID.append(chars.charAt(index));
+        }
+
+        String checkID = "SELECT * FROM file WHERE F_ID = ?";
+        con = createDbCon();
+        try {
+            preStatement = con.prepareStatement(checkID);
+            preStatement.setString(1, fileID.toString());
+            result = preStatement.executeQuery();
+            if (result.next()) {
+                genarateCusID();
+            }
+            else{
+                return fileID.toString();
             }
         }
         catch (SQLException e) {

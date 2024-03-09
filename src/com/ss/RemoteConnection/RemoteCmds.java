@@ -1,7 +1,9 @@
 package com.ss.RemoteConnection;
 import com.jcraft.jsch.*;
+import com.ss.Database.DbQuery;
 import com.ss.Home.*;
 
+import javax.swing.*;
 import java.io.*;
 import java.nio.file.Path;
 
@@ -27,7 +29,7 @@ public class RemoteCmds extends Connection{
         sessionMKDIR.disconnect();
     }
 
-    public static void uploadFile(String localFilePath) { // Upload file to the server
+    public static void uploadFile(String cusID, String fileName, int fileSize, String localFilePath, String fileType) { // Upload file to the server
         Session sessionUpload = connect(); // Connect to the server, using the connect method from the super class
         try{
             ChannelSftp sftpUpload = (ChannelSftp) sessionUpload.openChannel("sftp"); // create a new sftp connection
@@ -35,8 +37,10 @@ public class RemoteCmds extends Connection{
 
             String remoteFilePath = "/root/syncsentry/"+HomeInterface.getCusID()+"/";
             sftpUpload.put(localFilePath, remoteFilePath); // upload the file to server
+
             sftpUpload.disconnect();
-            System.out.println("File uploaded to server successfully, from "+localFilePath);
+            new DbQuery().insertFileInDb(cusID, fileName, fileSize, fileType); // insert the file details to the database
+            System.out.println("File uploaded successfully");
         }
         catch (JSchException | SftpException e) {
             throw new RuntimeException(e);
@@ -45,12 +49,13 @@ public class RemoteCmds extends Connection{
         sessionUpload.disconnect(); // disconnect from VPS server
     }
 
-    public static void downloadFile(){ // Download file from the server
+    public static void downloadFile(String fileName, String fileType){ // Download file from the server
         Session sessionDownload = connect();
         try{
             ChannelSftp sftpDownload = (ChannelSftp) sessionDownload.openChannel("sftp");
             sftpDownload.connect();
-            String remoteFilePath = "/root/syncsentry/logo.png";
+
+            String remoteFilePath = "/root/syncsentry/"+HomeInterface.getCusID()+"/"+fileName+fileType;
 
             String localUser = System.getProperty("user.name"); // get the current user of the local system
 
@@ -78,16 +83,17 @@ public class RemoteCmds extends Connection{
         sessionDownload.disconnect(); // disconnect from VPS server
     }
 
-    public static void renameFile(String oldName, String newName){// Rename a file
+    public static void renameFile(String oldName, String newName, String fileId, String fileType){// Rename a file
         Session sessionRename = connect();
-        String oldPath = "/root/syncsentry/"+HomeInterface.getCusID()+"/"+oldName;
-        String newPath = "/root/syncsentry/"+HomeInterface.getCusID()+"/"+newName;
+        String oldPath = "/root/syncsentry/"+HomeInterface.getCusID()+"/"+oldName+fileType;
+        String newPath = "/root/syncsentry/"+HomeInterface.getCusID()+"/"+newName+fileType;
         try{
             ChannelSftp sftpRename = (ChannelSftp) sessionRename.openChannel("sftp");
             sftpRename.connect();
 
             sftpRename.rename(oldPath, newPath); //rename the file in server
             sessionRename.disconnect();
+            new DbQuery().renameFileInDb(fileId, newName);
             System.out.println(oldName+" renamed to "+newName+" successfully");
         }
         catch (JSchException e) {
@@ -98,15 +104,16 @@ public class RemoteCmds extends Connection{
         sessionRename.disconnect();
     }
 
-    public static void deleteFile(String fileName){
+    public static void deleteFile(String fileName, String fileID, String fileType){
         Session sessionDelete = connect();
         try{
             ChannelExec deleteFile = (ChannelExec) sessionDelete.openChannel("exec");
-            final String deleteCommand = "rm /root/syncsentry/"+HomeInterface.getCusID()+"/"+fileName;
+            final String deleteCommand = "rm /root/syncsentry/"+HomeInterface.getCusID()+"/"+fileName+fileType;
 
             deleteFile.setCommand(deleteCommand);
             deleteFile.connect(); //Connect and execute the command
             deleteFile.disconnect();
+            new DbQuery().deleteFileInDb(fileID);
             System.out.println(fileName+" deleted successfully");
         }
         catch (JSchException e) {
@@ -114,13 +121,5 @@ public class RemoteCmds extends Connection{
         }
 
         sessionDelete.disconnect();
-    }
-    public static void main(String[] args) {
-//        createFolderInVps("C001");
-        uploadFile("src/images/logo.png");
-//        downloadFile();
-//        renameFile("logo.png", "logo1.png");
-//        deleteFile("logo1.png");
-
     }
 }

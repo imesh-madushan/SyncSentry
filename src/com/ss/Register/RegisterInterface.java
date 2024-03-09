@@ -140,7 +140,5 @@ public class RegisterInterface extends JFrame{
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setVisible(true);
-
-
     }
 }
