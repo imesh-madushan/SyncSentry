@@ -9,7 +9,7 @@ SysncSentry is a **cloud-backup** desktop application developed using **Java**. 
 - **File Size Limitations**: Free plan limited to files smaller than 10MB. Upgrade to pro for larger files.
 - **Virtual Machine Requirement**: Requires a virtual machine connected via SSH for operation.
 
-###3 Java Libraries Used
+### Java Libraries Used
 
 - `java.swing` - Used for developing the front-end of the application.
 - `java.jdbc` - Used to connect to the MySQL database.
