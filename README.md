@@ -50,4 +50,4 @@ This project was created for a university module to meet academic requirements a
 #### License
 
 This project is licensed under the MIT License. See the `LICENSE` file for details.
-This project is licensed under the MIT License - see the LICENSE.txt](LICENSE.txt) file for details.
+This project is licensed under the MIT License - see the [LICENSE.txt](LICENSE.txt) file for details.
