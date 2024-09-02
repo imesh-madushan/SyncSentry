@@ -9,9 +9,9 @@ import java.sql.Statement;
 class DbConnection{
     private Connection dbCon;
     private Statement cmdSql;
-    private final String dbUrl = "jdbc:mysql://oneoclock.lifezeeds.me:3306/syncsentry";
-    private final String dbUser = "imesh";
-    private final String dbPasswd = "imesh";
+    private final String dbUrl = "jdbc:mysql://dbhost:3306"; //change this with your actual database host url and port
+    private final String dbUser = "dbusername"; //change the username with your credintials
+    private final String dbPasswd = "dbpassword"; //change the password as well
 
     protected DbConnection(){
     }
