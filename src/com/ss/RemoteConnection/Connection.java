@@ -3,10 +3,9 @@ import com.jcraft.jsch.*;
 
 class Connection {
     private static final String username = "root";
-//    private static final String keyPath = "src/com/ss/RemoteConnection/v1digi.pem";
-    private static final String host = "159.65.138.251";
+    private static final String host = "";
 
-    private static final String password = "soft7878";
+    private static final String password = "";
 
     protected static Session connect() {
         try {

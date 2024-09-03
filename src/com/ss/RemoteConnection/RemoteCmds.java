@@ -41,6 +41,7 @@ public class RemoteCmds extends Connection{
             sftpUpload.disconnect();
             new DbQuery().insertFileInDb(cusID, fileName, fileSize, fileType); // insert the file details to the database
             System.out.println("File uploaded successfully");
+            HomeInterface.showMsgsucess("File has uploaded successfully to cloud");
         }
         catch (JSchException | SftpException e) {
             throw new RuntimeException(e);
