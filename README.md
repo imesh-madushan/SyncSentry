@@ -4,7 +4,7 @@ SysncSentry is a **cloud-backup** desktop application developed using **Java**. 
 
 #### Demo Version of Program
 
-- The compiled `.jar` file is available [here](out/artifacts/SyncSentry_jar/SyncSentry.jar). Download it and run the application using the following command:
+- The compiled `.jar` file is available [here](demo/SyncSentry.jar). Download it and run the application using the following command:
   ```sh
   java -jar SysncSentry.jar
   ```
