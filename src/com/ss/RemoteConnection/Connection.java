@@ -2,10 +2,11 @@ package com.ss.RemoteConnection;
 import com.jcraft.jsch.*;
 
 class Connection {
-    private static final String username = "root";
-    private static final String host = "";
+    private static final String username = "root"; //Enter username of the virtual-machine's account
+//    private static final String keyPath = "src/com/ss/RemoteConnection/v1digi.pem";
+    private static final String host = "ip-address-of-server"; //Enter your virtual-macine's ip-address/host here
 
-    private static final String password = "";
+    private static final String password = "your-password"; //Enter your virtual-machine's password here
 
     protected static Session connect() {
         try {
