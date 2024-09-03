@@ -90,4 +90,4 @@ This project was developed as part of a university module to fulfill academic re
 
 ### License
 
-This project is licensed under the MIT License. See the [LICENSE.txt][LICENSE.txt]` file for details.
+This project is licensed under the MIT License. See the [LICENSE.txt](LICENSE.txt) file for details.
