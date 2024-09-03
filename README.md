@@ -1,12 +1,12 @@
-# SysncSentry <img align="center" src="https://raw.githubusercontent.com/imesh927/SyncSentry/master/src/Images/logo.png" width="40" height="40">
+# SyncSentry <img align="center" src="https://raw.githubusercontent.com/imesh927/SyncSentry/master/src/Images/logo.png" width="40" height="40">
 
-SysncSentry is a **cloud-backup** desktop application developed using **Java**. It allows users to securely upload, download, rename, and delete files. The application supports a free plan for uploading files up to 10MB, with a pro version available for larger file uploads.
+SyncSentry is a **cloud-backup** desktop application developed using **Java**. It allows users to securely upload, download, rename, and delete files. The application supports a free plan for uploading files up to 10MB, with a pro version available for larger file uploads.
 
 #### Demo Version of Program
 
 - The compiled `.jar` file is available [here](demo/SyncSentry.jar). Download it and run the application using the following command:
   ```sh
-  java -jar SysncSentry.jar
+  java -jar SyncSentry.jar
   ```
 
 #### Features
@@ -27,21 +27,21 @@ SysncSentry is a **cloud-backup** desktop application developed using **Java**. 
 1. **Clone the repository**:
 
    ```sh
-   git clone https://github.com/imesh927/SysncSentry.git
+   git clone https://github.com/imesh927/SyncSentry.git
    ```
 
 2. **Configure SSH Connection**:
 
    - Update the **username**, **password**, and **IP address** of your VPS in:
      ```sh
-     ./SysncSentry/src/com/ss/RemoteConnection/Connection.java
+     ./SyncSentry/src/com/ss/RemoteConnection/Connection.java
      ```
 
 3. **Configure Database Connection**:
 
    - Update your **database urlt**, **username**, and **password** in:
      ```sh
-     ./SysncSentry/src/com/ss/Database/DbConnection.java
+     ./SyncSentry/src/com/ss/Database/DbConnection.java
      ```
 
 4. **Create the Database**:
