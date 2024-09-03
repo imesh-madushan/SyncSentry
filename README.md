@@ -4,7 +4,7 @@ SyncSentry is a **cloud-backup** desktop application developed using **Java**. I
 
 #### Demo Version of Program
 
-- The compiled `.jar` file is available [here](demo/SyncSentry.jar). Download it and run the application using the following command:
+- The compiled `.jar` file is available [here](demo/SyncSentry.zip). Download it and run the application using the following command:
   ```sh
   java -jar SyncSentry.jar
   ```
