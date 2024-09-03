@@ -1,0 +1,20 @@
+***Use this MySQL queries to create your database***
+
+
+CREATE TABLE Customer(
+	C_ID VARCHAR(10) NOT NULL,
+    C_Name VARCHAR(20) NOT NULL,
+    C_Email VARCHAR(30) NOT NULL,
+    C_Password VARCHAR(20) NOT NULL,
+    Pro INT NOT NULL DEFAULT 0,
+    PRIMARY KEY (C_ID)
+);
+
+CREATE TABLE File (
+    F_ID VARCHAR(10) NOT NULL,
+    F_Name VARCHAR(500) NOT NULL,
+    F_Size INT NOT NULL,
+    C_ID VARCHAR(10),
+    PRIMARY KEY (F_ID),
+    FOREIGN KEY (C_ID) REFERENCES Customer(C_ID)
+);
