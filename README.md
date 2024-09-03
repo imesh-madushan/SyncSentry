@@ -2,27 +2,27 @@
 
 SyncSentry is a **cloud-backup** desktop application developed using **Java**. It allows users to securely upload, download, rename, and delete files. The application supports a free plan for uploading files up to 10MB, with a pro version available for larger file uploads.
 
-#### Demo Version of Program
+### Demo Version of Program
 
 - The compiled `.jar` file is available [here](demo/SyncSentry.zip). Download it and run the application using the following command:
   ```sh
   java -jar SyncSentry.jar
   ```
 
-#### Features
+### Features
 
 - **Secure File Management**: Upload, download, rename, and delete files with ease.
 - **User Authentication**: Secure login required to access the application.
 - **File Size Limitations**: Free plan limited to files smaller than 10MB. Upgrade to pro for larger files.
 - **Virtual Machine Requirement**: Requires a virtual machine connected via SSH for operation.
 
-#### Java Libraries Used
+### Java Libraries Used
 
 - `java.swing` - Used for developing the front-end of the application.
 - `java.jdbc` - Used to connect to the MySQL database.
 - `java.jsch` - Used to execute remote shell commands on the cloud server.
 
-#### Setup Instructions
+### Setup Instructions
 
 1. **Clone the repository**:
 
@@ -78,13 +78,13 @@ SyncSentry is a **cloud-backup** desktop application developed using **Java**. I
      .\SyncSentry\src\com\ss\Login\LoginInterface.java
      ```
 
-#### Requirements
+### Requirements
 
 - A virtual machine with SSH connectivity.
 - Java Development Kit (JDK) installed.
 - MySQL database.
 
-#### Purpose of this Project
+### Purpose of this Project
 
 This project was developed as part of a university module to fulfill academic requirements and enhance my knowledge and skills in software development.
 
