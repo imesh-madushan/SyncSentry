@@ -2,12 +2,8 @@
 
 SyncSentry is a **cloud-backup** desktop application developed using **Java**. It allows users to securely upload, download, rename, and delete files. The application supports a free plan for uploading files up to 10MB, with a pro version available for larger file uploads.
 
-### Demo Version of Program
+#### Demo - [https://youtu.be/bYR1YNL_vd8](https://youtu.be/bYR1YNL_vd8)
 
-- The compiled `.jar` file is available [here](demo/SyncSentry.zip). Download it and run the application using the following command:
-  ```sh
-  java -jar SyncSentry.jar
-  ```
 
 ### Features
 
