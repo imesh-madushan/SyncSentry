@@ -21,6 +21,13 @@ public class RemoteCmds extends Connection{
             createFolder.connect(); //Connect and execute the command
             createFolder.disconnect();
 
+            // Set permissions for the newly created directory
+            ChannelExec setPermissions = (ChannelExec) sessionMKDIR.openChannel("exec");
+            final String commandCHMOD = "chmod 770 syncsentry/" + cusID; // Grant full permissions to owner and group
+            setPermissions.setCommand(commandCHMOD);
+            setPermissions.connect(); // Connect and execute the command
+            setPermissions.disconnect();
+
             System.out.println("Folder "+cusID+" created successfully in server");
         }
         catch (JSchException e) {
@@ -35,7 +42,7 @@ public class RemoteCmds extends Connection{
             ChannelSftp sftpUpload = (ChannelSftp) sessionUpload.openChannel("sftp"); // create a new sftp connection
             sftpUpload.connect();
 
-            String remoteFilePath = "/root/syncsentry/"+HomeInterface.getCusID()+"/";
+            String remoteFilePath = "syncsentry/"+HomeInterface.getCusID()+"/";
             sftpUpload.put(localFilePath, remoteFilePath); // upload the file to server
 
             sftpUpload.disconnect();
@@ -56,7 +63,7 @@ public class RemoteCmds extends Connection{
             ChannelSftp sftpDownload = (ChannelSftp) sessionDownload.openChannel("sftp");
             sftpDownload.connect();
 
-            String remoteFilePath = "/root/syncsentry/"+HomeInterface.getCusID()+"/"+fileName+fileType;
+            String remoteFilePath = "syncsentry/"+HomeInterface.getCusID()+"/"+fileName+fileType;
 
             String localUser = System.getProperty("user.name"); // get the current user of the local system
 
@@ -87,8 +94,8 @@ public class RemoteCmds extends Connection{
 
     public static void renameFile(String oldName, String newName, String fileId, String fileType){// Rename a file
         Session sessionRename = connect();
-        String oldPath = "/root/syncsentry/"+HomeInterface.getCusID()+"/"+oldName+fileType;
-        String newPath = "/root/syncsentry/"+HomeInterface.getCusID()+"/"+newName+fileType;
+        String oldPath = "syncsentry/"+HomeInterface.getCusID()+"/"+oldName+fileType;
+        String newPath = "syncsentry/"+HomeInterface.getCusID()+"/"+newName+fileType;
         try{
             ChannelSftp sftpRename = (ChannelSftp) sessionRename.openChannel("sftp");
             sftpRename.connect();
@@ -111,7 +118,7 @@ public class RemoteCmds extends Connection{
         Session sessionDelete = connect();
         try{
             ChannelExec deleteFile = (ChannelExec) sessionDelete.openChannel("exec");
-            final String deleteCommand = "rm /root/syncsentry/"+HomeInterface.getCusID()+"/"+fileName+fileType;
+            final String deleteCommand = "rm syncsentry/"+HomeInterface.getCusID()+"/"+fileName+fileType;
 
             deleteFile.setCommand(deleteCommand);
             deleteFile.connect(); //Connect and execute the command
